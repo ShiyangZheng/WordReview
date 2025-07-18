@@ -1,17 +1,17 @@
-# .github/workflows/deploy.yml
-name: Deploy Static Site
+name: Deploy Pug to GitHub Pages
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v3
-        with: { node-version: 18 }
+        with:
+          node-version: 18
       - run: npm install pug-cli -g
-      - run: pug ./templates -o ./dist  # Pug → HTML
+      - run: pug ./templates -o ./dist --pretty  # 添加 --pretty 格式化输出
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.PAT }}
-          publish_dir: ./root
+          publish_dir: ./dist
